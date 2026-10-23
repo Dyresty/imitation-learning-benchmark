@@ -102,7 +102,9 @@ def main() -> None:
                 a, b = runs[labels[i]]["successes"], runs[labels[j]]["successes"]
                 only_a = sum(x and not y for x, y in zip(a, b))
                 only_b = sum(y and not x for x, y in zip(a, b))
-                lines.append(f"| {labels[i]} | {labels[j]} | {only_a} | {only_b} | {mcnemar_exact_p(only_a, only_b):.3f} |")
+                pval = mcnemar_exact_p(only_a, only_b)
+                pval_txt = "<0.001" if pval < 0.001 else f"{pval:.3f}"
+                lines.append(f"| {labels[i]} | {labels[j]} | {only_a} | {only_b} | {pval_txt} |")
     (args.out / "results.md").write_text("\n".join(lines) + "\n")
 
     # Per-seed CSV
@@ -120,7 +122,7 @@ def main() -> None:
         fail_lines.append("")
         for i in failed:
             video = r["videos"].get(i)
-            note = f" - video: `{video}`" if video else " - no video (only the first episodes are rendered)"
+            note = f" - video: `{Path(video).name}`" if video else " - no video (only the first episodes are rendered)"
             fail_lines.append(f"- seed {seeds[i]} (episode {i}), max reward {r['max_rewards'][i]:.3f}{note}")
         fail_lines.append("")
     (args.out / "failures.md").write_text("\n".join(fail_lines))
