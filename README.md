@@ -93,6 +93,17 @@ ACT first pushes the T far to the lower left and then recovers; it finishes just
 
 The descriptions are from watching the rollouts (full-quality videos in [`media/videos/`](media/videos/)); the failure lists for every episode are in [`results/failures.md`](results/failures.md).
 
+## Why the gap is so large
+
+First, the comparison isn't even. The Diffusion checkpoint was trained by the LeRobot team; I only evaluated it. These are the reasons I think explain most of the 14% vs 58% gap, roughly in order of how much I think each one matters.
+
+1. **Training budget.** The Diffusion checkpoint's `train_config.json` says 200k steps at batch size 64, so about 12.8M samples. ACT run 2 saw 20k x 32 = 640k samples, about 20 times less. ACT was also still improving when training ended: average max reward went 0.45, 0.58, 0.77, 0.83 across the four checkpoints.
+2. **More than one way to solve the task.** There is often more than one sensible way to push the T into place, for example going around one side of it or the other. Diffusion Policy is built to model that kind of multimodal action distribution. ACT can only do it through its CVAE latent, and in run 2 that latent collapsed (`kld_loss` around 0.001). With the latent unused, ACT is essentially doing L1 regression, which tends to average two strategies into a hesitant path somewhere in between. That would fit the 13 ACT failures that never got going, against 2 for Diffusion. This is still a hypothesis; I haven't shown it.
+3. **Augmentation and observation history.** The Diffusion config trains on random 84x84 crops and looks at the last 2 frames (`n_obs_steps=2`). ACT with LeRobot defaults gets a single frame and no augmentation. With only 206 demonstrations, augmentation probably makes a real difference.
+4. **ACT wasn't designed for this kind of task.** ACT was built for bimanual manipulation from 50 Hz teleoperation data, predicting long action chunks. PushT runs at 10 Hz, and success depends on small, precise corrections right at the end. That is where most of the failures are: 21 of ACT's 43 failures reached a max reward of 0.9 or more.
+
+The first one is the cheapest to test: train ACT for much longer with everything else unchanged. If the gap mostly closes, it was the budget. If it doesn't, the collapsed latent becomes the main suspect.
+
 ## What I learned
 
 - **A single number hides a lot.** Success rate on 50 episodes has a wide confidence interval (14% is 7-26%), and the 10-episode checks during training swung between 0% and 30% while the underlying reward steadily rose. Average max reward and the near-miss counts were more informative than success rate alone.
@@ -104,6 +115,7 @@ The descriptions are from watching the rollouts (full-quality videos in [`media/
 ## Next steps
 
 - Retrain ACT with a lower `kl_weight`, more steps, and compare, to test the collapsed-latent suspicion on its own.
+- Train ACT for about 100k steps with the run 2 settings, to see how much of the gap is just training budget.
 - Evaluate on more seeds (for example 200) to tighten the confidence intervals.
 - Fine-tune a vision-language-action model (SmolVLA with LoRA) on a LeRobot simulation task and evaluate it with this same protocol.
 
