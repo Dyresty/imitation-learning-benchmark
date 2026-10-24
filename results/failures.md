@@ -112,3 +112,41 @@ Episode i uses seed 100000 + i. Videos were rendered for the first 10 episodes o
 - seed 100047 (episode 47), max reward 0.999
 - seed 100048 (episode 48), max reward 0.920
 - seed 100049 (episode 49), max reward 0.992
+
+## ACT run 4 (run 2 settings, 100k steps): 35 failures
+
+- seed 100000 (episode 0), max reward 1.000
+- seed 100001 (episode 1), max reward 0.996
+- seed 100002 (episode 2), max reward 0.159
+- seed 100003 (episode 3), max reward 0.980
+- seed 100004 (episode 4), max reward 0.415
+- seed 100006 (episode 6), max reward 0.268
+- seed 100007 (episode 7), max reward 0.000
+- seed 100008 (episode 8), max reward 0.407
+- seed 100009 (episode 9), max reward 0.422
+- seed 100010 (episode 10), max reward 0.971
+- seed 100012 (episode 12), max reward 0.996
+- seed 100013 (episode 13), max reward 0.986
+- seed 100016 (episode 16), max reward 0.939
+- seed 100018 (episode 18), max reward 0.490
+- seed 100020 (episode 20), max reward 0.977
+- seed 100021 (episode 21), max reward 0.672
+- seed 100022 (episode 22), max reward 0.971
+- seed 100023 (episode 23), max reward 0.835
+- seed 100024 (episode 24), max reward 0.681
+- seed 100026 (episode 26), max reward 0.911
+- seed 100027 (episode 27), max reward 0.456
+- seed 100029 (episode 29), max reward 0.402
+- seed 100030 (episode 30), max reward 0.339
+- seed 100033 (episode 33), max reward 0.985
+- seed 100034 (episode 34), max reward 0.996
+- seed 100035 (episode 35), max reward 0.112
+- seed 100036 (episode 36), max reward 0.000
+- seed 100040 (episode 40), max reward 0.990
+- seed 100042 (episode 42), max reward 0.972
+- seed 100043 (episode 43), max reward 0.363
+- seed 100044 (episode 44), max reward 0.968
+- seed 100046 (episode 46), max reward 0.064
+- seed 100047 (episode 47), max reward 0.996
+- seed 100048 (episode 48), max reward 0.527
+- seed 100049 (episode 49), max reward 1.000
